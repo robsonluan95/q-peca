@@ -8,7 +8,19 @@ Este guia contém as informações necessárias para interagir com a API do back
 
 ---
 
+## 🔐 Autenticação e Sessão (Users & session)
+
+Para rotas protegidas, envie o token no header: `Authorization: Bearer <TOKEN>`.
+
+| Método | Rota | Descrição | Exemplo de JSON |
+| :--- | :--- | :--- | :--- |
+| **POST** | `/users` | Criar usuário | `{ "name": "...", "email": "...", "password": "...", "role": "USER" }` |
+| **POST** | `/session` | Login (gera JWT) | `{ "email": "...", "password": "..." }` |
+
+---
+
 ## 📂 Categorias (Categories)
+*(Requer ADMIN para POST, PUT, DELETE)*
 
 | Método | Rota | Descrição | Exemplo de JSON |
 | :--- | :--- | :--- | :--- |
@@ -20,6 +32,7 @@ Este guia contém as informações necessárias para interagir com a API do back
 ---
 
 ## 🔧 Peças (Parts)
+*(Requer ADMIN para POST, PUT, DELETE)*
 
 | Método | Rota | Descrição | Exemplo de JSON |
 | :--- | :--- | :--- | :--- |
@@ -31,6 +44,7 @@ Este guia contém as informações necessárias para interagir com a API do back
 ---
 
 ## 🚗 Veículos (Vehicles)
+*(Requer ADMIN para POST, PUT, DELETE)*
 
 | Método | Rota | Descrição | Exemplo de JSON |
 | :--- | :--- | :--- | :--- |
@@ -43,16 +57,18 @@ Este guia contém as informações necessárias para interagir com a API do back
 
 ## 🤝 Compatibilidade (Part Applications)
 
-| Método | Rota | Descrição | Exemplo de JSON |
-| :--- | :--- | :--- | :--- |
-| **POST** | `/part/apply` | Vincular peça/veículo | `{ "partId": "uuid", "vehicleId": "uuid", "notes": "..." }` |
-| **GET** | `/part/applications` | Listar vínculos | N/A |
-| **PUT** | `/part/apply` | Atualizar vínculo | `{ "id": "uuid", "notes": "Nova obs" }` |
-| **DELETE** | `/part/apply` | Deletar vínculo | `?id=uuid` |
+| Método | Rota | Descrição | Permissão | Exemplo de JSON |
+| :--- | :--- | :--- | :--- | :--- |
+| **POST** | `/part/apply` | Propor vínculo | Autenticado | `{ "partId": "uuid", "vehicleId": "uuid", "notes": "..." }` |
+| **GET** | `/part/applications` | Listar vínculos | Público | N/A |
+| **PATCH** | `/part/approve` | Aprovar/Rejeitar | **ADMIN** | `{ "applicationId": "uuid", "status": "APPROVED" }` |
+| **PUT** | `/part/apply` | Atualizar vínculo | **ADMIN** | `{ "id": "uuid", "notes": "..." }` |
+| **DELETE** | `/part/apply` | Deletar vínculo | **ADMIN** | `?id=uuid` |
 
 ---
 
 ## 🏪 Lojas (Stores)
+*(Requer ADMIN para POST, PUT, DELETE)*
 
 | Método | Rota | Descrição | Exemplo de JSON |
 | :--- | :--- | :--- | :--- |
@@ -64,6 +80,7 @@ Este guia contém as informações necessárias para interagir com a API do back
 ---
 
 ## 💰 Preços (Prices)
+*(Requer ADMIN para POST, PUT, DELETE)*
 
 | Método | Rota | Descrição | Exemplo de JSON |
 | :--- | :--- | :--- | :--- |

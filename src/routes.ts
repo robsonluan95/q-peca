@@ -30,43 +30,55 @@ import { ListVehicleController } from './controllers/vehicle/ListVehicleControll
 import { UpdateVehicleController } from './controllers/vehicle/UpdateVehicleController';
 import { RemoveVehicleController } from './controllers/vehicle/RemoveVehicleController';
 
+import { CreateUserController } from './controllers/user/CreateUserController';
+import { AuthUserController } from './controllers/user/AuthUserController';
+import { ApprovePartApplicationController } from './controllers/partApplication/ApprovePartApplicationController';
+
+import { isAuthenticated } from './middlewares/isAuthenticated';
+import { isAdmin } from './middlewares/isAdmin';
+
 const router = Router();
 
+// --- Users & Session ---
+router.post('/users', new CreateUserController().handle);
+router.post('/session', new AuthUserController().handle);
+
 // --- Categories ---
-router.post('/category', new CreateCategoryController().handle);
+router.post('/category', isAuthenticated, isAdmin, new CreateCategoryController().handle);
 router.get('/categories', new ListCategoryController().handle);
-router.put('/category', new UpdateCategoryController().handle);
-router.delete('/category', new RemoveCategoryController().handle);
+router.put('/category', isAuthenticated, isAdmin, new UpdateCategoryController().handle);
+router.delete('/category', isAuthenticated, isAdmin, new RemoveCategoryController().handle);
 
 // --- Parts ---
-router.post('/part', new CreatePartController().handle);
+router.post('/part', isAuthenticated, isAdmin, new CreatePartController().handle);
 router.get('/parts', new ListPartsController().handle);
-router.put('/part', new UpdatePartController().handle);
-router.delete('/part', new RemovePartController().handle);
+router.put('/part', isAuthenticated, isAdmin, new UpdatePartController().handle);
+router.delete('/part', isAuthenticated, isAdmin, new RemovePartController().handle);
 
 // --- Part Applications (Compatibilidade) ---
-router.post('/part/apply', new CreatePartApplicationController().handle);
+router.post('/part/apply', isAuthenticated, new CreatePartApplicationController().handle);
 router.get('/part/applications', new ListPartApplicationController().handle);
-router.put('/part/apply', new UpdatePartApplicationController().handle);
-router.delete('/part/apply', new RemovePartApplicationController().handle);
+router.put('/part/apply', isAuthenticated, isAdmin, new UpdatePartApplicationController().handle);
+router.delete('/part/apply', isAuthenticated, isAdmin, new RemovePartApplicationController().handle);
+router.patch('/part/approve', isAuthenticated, isAdmin, new ApprovePartApplicationController().handle);
 
 // --- Stores ---
-router.post('/store', new CreateStoreController().handle);
+router.post('/store', isAuthenticated, isAdmin, new CreateStoreController().handle);
 router.get('/stores', new ListStoreController().handle);
-router.put('/store', new UpdateStoreController().handle);
-router.delete('/store', new RemoveStoreController().handle);
+router.put('/store', isAuthenticated, isAdmin, new UpdateStoreController().handle);
+router.delete('/store', isAuthenticated, isAdmin, new RemoveStoreController().handle);
 
 // --- Prices ---
-router.post('/price', new CreatePriceController().handle);
+router.post('/price', isAuthenticated, isAdmin, new CreatePriceController().handle);
 router.get('/prices', new ListPriceController().handle);
-router.put('/price', new UpdatePriceController().handle);
-router.delete('/price', new RemovePriceController().handle);
+router.put('/price', isAuthenticated, isAdmin, new UpdatePriceController().handle);
+router.delete('/price', isAuthenticated, isAdmin, new RemovePriceController().handle);
 
 // --- Vehicles ---
-router.post('/vehicle', new CreateVehicleController().handle);
+router.post('/vehicle', isAuthenticated, isAdmin, new CreateVehicleController().handle);
 router.get('/vehicles', new ListVehicleController().handle);
-router.put('/vehicle', new UpdateVehicleController().handle);
-router.delete('/vehicle', new RemoveVehicleController().handle);
+router.put('/vehicle', isAuthenticated, isAdmin, new UpdateVehicleController().handle);
+router.delete('/vehicle', isAuthenticated, isAdmin, new RemoveVehicleController().handle);
 
 
 

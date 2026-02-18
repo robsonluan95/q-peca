@@ -61,9 +61,19 @@ O servidor estará rodando em `http://localhost:3333`.
 - **Vehicles**: Cadastro de carros (Marca, Modelo, Ano).
 - **Categories**: Organização das peças (ex: Motor, Freios).
 - **Parts**: Peças com código (Part Number) e descrição.
-- **PartApplication**: Tabela de compatibilidade (Peça X serve no Carro Y).
+- **PartApplication**: Tabela de compatibilidade (Peça X serve no Carro Y). Possui fluxo de aprovação (**PENDING**, **APPROVED**, **REJECTED**).
 - **Stores**: Lojas parceiras.
 - **Prices**: Preços e links de afiliados para cada peça em cada loja.
+
+---
+
+## 🔐 Autenticação e Papéis
+
+O sistema utiliza **JWT (JSON Web Token)** para autenticação.
+
+- **ADMIN**: Pode gerenciar tudo (Categorias, Peças, Veículos, Lojas, Preços) e aprovar aplicações sugeridas.
+- **USER**: Pode listar dados aprovados e sugerir novas aplicações de peças.
+- **Visitante**: Pode apenas listar dados aprovados (sem necessidade de token).
 
 ---
 

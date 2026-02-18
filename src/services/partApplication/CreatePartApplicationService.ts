@@ -3,16 +3,19 @@ import prismaClient from "../../prisma";
 interface PartApplicationRequest {
     partId: string;
     vehicleId: string;
+    userId: string;
     notes?: string;
 }
 
 class CreatePartApplicationService {
-    async execute({ partId, vehicleId, notes }: PartApplicationRequest) {
+    async execute({ partId, vehicleId, userId, notes }: PartApplicationRequest) {
         const application = await prismaClient.partApplication.create({
             data: {
                 partId: partId,
                 vehicleId: vehicleId,
-                notes: notes
+                userId: userId,
+                notes: notes,
+                status: "PENDING"
             },
             include: {
                 vehicle: true,
