@@ -85,5 +85,10 @@ Para detalhes técnicos sobre como realizar chamadas para os endpoints, consulte
 
 ---
 
+
 ## 📄 Licença
-Este projeto está sob a licença MIT.
+
+[MIT License](LICENSE)
+
+---
+Desenvolvido por **Robson Luan**
