@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("USER") // ADMIN, USER
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Vehicle {
+  id        String @id @default(uuid())
+  make      String // Fiat, VW, Honda
+  model     String // Strada, Mobi, Civic
+  yearStart Int
+  yearEnd   Int? // Null if currently in production
+
+  applications PartApplication[]
+
+  @@map("vehicles")
+}
+
+model Category {
+  id    String @id @default(uuid())
+  name  String
+  parts Part[]
+
+  @@map("categories")
+}
+
+model Part {
+  id          String  @id @default(uuid())
+  name        String
+  partNumber  String? // Código da peça no fabricante
+  description String?
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  applications PartApplication[]
+  prices       Price[]
+
+  @@map("parts")
+}
+
+// Tabela pivô que diz: "Essa peça serve nesses carros"
+model PartApplication {
+  id        String @id @default(uuid())
+  partId    String
+  vehicleId String
+
+  part    Part    @relation(fields: [partId], references: [id])
+  vehicle Vehicle @relation(fields: [vehicleId], references: [id])
+
+  notes String? // Ex: "Apenas modelos 1.4", "Lado Esquerdo"
+
+  @@map("part_applications")
+}
+
+model Store {
+  id      String  @id @default(uuid())
+  name    String
+  baseUrl String?
+
+  prices Price[]
+
+  @@map("stores")
+}
+
+model Price {
+  id            String   @id @default(uuid())
+  value         Decimal
+  url           String
+  affiliateLink String?
+  updatedAt     DateTime @updatedAt
+
+  partId  String
+  storeId String
+
+  part  Part  @relation(fields: [partId], references: [id])
+  store Store @relation(fields: [storeId], references: [id])
+
+  @@map("prices")
+}
